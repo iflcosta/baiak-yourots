@@ -1,0 +1,26 @@
+# CODEOWNERS
+# One dev owns everything. Add @<gh-handle> per area when collaborators join.
+
+# Default owner
+* @iflcosta
+
+# Server (C++ + Lua + schema)
+/server/ @iflcosta
+/server/schema.sql @iflcosta
+/server/config.lua @iflcosta
+
+# Client (C++ + Lua + modules)
+/client/ @iflcosta
+/client/modules/game_minimap/ @iflcosta
+/client/data/styles/ @iflcosta
+
+# Tools
+/tools/rme-clientid/ @iflcosta
+/scripts/ @iflcosta
+
+# Docs
+/docs/ @iflcosta
+AGENTS.md @iflcosta
+README.md @iflcosta
+spec.md @iflcosta
+todo.md @iflcosta
