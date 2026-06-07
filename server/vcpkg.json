@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+    "abseil",
+    "asio",
+    "fmt",
+    {
+      "name": "libiconv",
+      "platform": "osx"
+    },
+    "mio",
+    "openssl",
+    "pugixml",
+    "spdlog",
+    "simdutf",
+    "zlib"
+  ],
+  "features": {
+    "http": {
+      "description": "Enable HTTP support",
+      "dependencies": []
+    },
+    "lua": {
+      "description": "Use Lua instead of LuaJIT",
+      "dependencies": [
+        "lua"
+      ]
+    },
+    "luajit": {
+      "description": "Use LuaJIT instead of Lua",
+      "dependencies": [
+        "luajit"
+      ]
+    },
+    "libmariadb": {
+      "description": "Use libmariadb instead of libmysql",
+      "dependencies": [
+        "libmariadb"
+      ]
+    },
+    "libmysql": {
+      "description": "Use libmysql instead of libmariadb",
+      "dependencies": [
+        "libmysql"
+      ]
+    },
+    "unit-tests": {
+      "description": "Build unit tests",
+      "dependencies": []
+    }
+  },
+  "default-features": [
+    "lua",
+    "http",
+    "libmariadb"
+  ],
+  "builtin-baseline": "62159a45e18f3a9ac0548628dcaf74fcb60c6ff9"
+}

@@ -1,0 +1,65 @@
+# =========================================================
+# Baiak-Yourots TFS 1.8 — line ending policy
+# =========================================================
+# Mixed Windows + Linux dev. Normalize on LF in repo,
+# let git convert to CRLF on Windows checkout.
+
+* text=auto eol=lf
+
+# Windows-only scripts (must be CRLF on disk for PowerShell)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Visual Studio / C++ source: LF (most editors handle either)
+*.cs text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+*.c text eol=lf
+*.vcxproj text eol=lf
+*.sln text eol=lf
+*.props text eol=lf
+*.filters text eol=lf
+*.rc text eol=lf
+
+# Lua: LF (required by interpreter)
+*.lua text eol=lf
+
+# Markdown / config: LF
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Binary: do not touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.icns binary
+*.bmp binary
+*.dat binary
+*.spr binary
+*.otbm binary
+*.otb binary
+*.otml binary
+*.otmm binary
+*.minimap binary
+*.exe binary
+*.dll binary
+*.pdb binary
+*.lib binary
+*.obj binary
+*.o binary
+*.a binary
+*.so binary
+*.dylib binary
+*.rar binary
+*.zip binary
+*.7z binary
+*.tar.gz binary
+*.pdf binary

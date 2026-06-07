@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<store>
+
+    <category name="Premium Time" icon="store_premium" description="Premium Time enhances your account with premium areas, transportation, more spells, house rental, guild creation, offline training and larger depots. It is valid for all characters on this account and is activated immediately after purchase.">
+        <offer id="1001" name="30 Days of Premium Time" icon="30_days" price="250" eid="0" itemid="0" type="premium" value="30" count="30" description="Adds 30 days of Premium Time to your account immediately."/>
+        <offer id="1002" name="90 Days of Premium Time" icon="90_days" price="750" eid="0" itemid="0" type="premium" value="90" count="90" description="Adds 90 days of Premium Time to your account immediately."/>
+        <offer id="1003" name="180 Days of Premium Time" icon="180_days" price="1500" eid="0" itemid="0" type="premium" value="180" count="180" description="Adds 180 days of Premium Time to your account immediately."/>
+        <offer id="1004" name="360 Days of Premium Time" icon="360_days" price="3000" eid="0" itemid="0" type="premium" value="360" count="360" description="Adds 360 days of Premium Time to your account immediately."/>
+    </category>
+
+    <category name="Consumables" icon="store_consumables" description="Consumables and character protection services."/>
+
+    <category name="Prey Wildcards" icon="store_prey">
+        <offer id="4001" name="Prey Wildcard x1" icon="prey_wildcard" price="10" itemid="0" type="prey_wildcard" value="1"/>
+        <offer id="4002" name="Prey Wildcard x5" icon="prey_wildcard" price="50" itemid="0" type="prey_wildcard" value="5"/>
+        <offer id="4003" name="Prey Wildcard x10" icon="prey_wildcard" price="100" itemid="0" type="prey_wildcard" value="10"/>
+    </category>
+
+    <category name="Blessings" parent="Consumables" icon="store_blessings" description="Blessings reduce experience, skill and equipment loss when your character dies. They are added directly to your character and cannot exceed the regular blessing limit.">
+        <offer id="2001" name="All regular Blessings" icon="All_regular_Blessings" price="130" eid="0" itemid="0" type="blessing" value="-1" count="5" description="Adds all missing regular blessings to your character."/>
+        <offer id="2002" name="The Spiritual Shielding" icon="The_Spiritual_Shielding" price="25" eid="0" itemid="0" type="blessing" value="1" count="1" description="Adds The Spiritual Shielding blessing to your character."/>
+        <offer id="2003" name="The Embrace of Tibia" icon="The_Embrace_of_Tibia" price="25" eid="0" itemid="0" type="blessing" value="2" count="1" description="Adds The Embrace of Tibia blessing to your character."/>
+        <offer id="2004" name="The Fire of the Suns" icon="The_Fire_of_the_Suns" price="25" eid="0" itemid="0" type="blessing" value="3" count="1" description="Adds The Fire of the Suns blessing to your character."/>
+        <offer id="2005" name="The Wisdom of Solitude" icon="The_Wisdom_of_Solitude" price="25" eid="0" itemid="0" type="blessing" value="4" count="1" description="Adds The Wisdom of Solitude blessing to your character."/>
+        <offer id="2006" name="The Spark of the Phoenix" icon="The_Spark_of_the_Phoenix" price="25" eid="0" itemid="0" type="blessing" value="5" count="1" description="Adds The Spark of the Phoenix blessing to your character."/>
+    </category>
+
+    <category name="Potions" parent="Consumables" icon="store_potions" description="Potions are delivered directly to your character. Make sure you have enough inventory room before buying.">
+        <offer id="3001" name="Mana Potion" icon="" price="6" eid="268" itemid="268" count="125" description="Restores mana. This package contains 125 mana potions."/>
+        <offer id="3002" name="Mana Potion" icon="" price="12" eid="268" itemid="268" count="300" description="Restores mana. This package contains 300 mana potions."/>
+        <offer id="3003" name="Strong Mana Potion" icon="" price="7" eid="237" itemid="237" count="100" description="Restores mana. This package contains 100 strong mana potions."/>
+        <offer id="3004" name="Strong Mana Potion" icon="" price="17" eid="237" itemid="237" count="250" description="Restores mana. This package contains 250 strong mana potions."/>
+        <offer id="3005" name="Great Mana Potion" icon="" price="11" eid="238" itemid="238" count="100" description="Restores mana. This package contains 100 great mana potions."/>
+        <offer id="3006" name="Great Mana Potion" icon="" price="26" eid="238" itemid="238" count="250" description="Restores mana. This package contains 250 great mana potions."/>
+        <offer id="3007" name="Health Potion" icon="" price="6" eid="266" itemid="266" count="125" description="Restores hit points. This package contains 125 health potions."/>
+        <offer id="3008" name="Health Potion" icon="" price="11" eid="266" itemid="266" count="300" description="Restores hit points. This package contains 300 health potions."/>
+        <offer id="3009" name="Strong Health Potion" icon="" price="10" eid="236" itemid="236" count="100" description="Restores hit points. This package contains 100 strong health potions."/>
+        <offer id="3010" name="Strong Health Potion" icon="" price="21" eid="236" itemid="236" count="250" description="Restores hit points. This package contains 250 strong health potions."/>
+        <offer id="3011" name="Great Health Potion" icon="" price="18" eid="239" itemid="239" count="100" description="Restores hit points. This package contains 100 great health potions."/>
+        <offer id="3012" name="Great Health Potion" icon="" price="41" eid="239" itemid="239" count="250" description="Restores hit points. This package contains 250 great health potions."/>
+    </category>
+
+    <category name="Equipment" icon="store_equipment" description="Equipment and containers delivered directly to your character."/>
+
+    <category name="Weapons" parent="Equipment" icon="store_weapons" description="Weapons are delivered directly to your character. Make sure you have enough inventory room before buying.">
+        <offer id="4101" name="Magic Sword" icon="" price="100" eid="3288" itemid="3288" count="1" description="A legendary sword also known as the Sword of Valor."/>
+        <offer id="4102" name="Fire Axe" icon="" price="80" eid="3320" itemid="3320" count="1" description="An axe with a blade wrapped in magical flame."/>
+    </category>
+
+    <category name="Backpacks" parent="Equipment" icon="store_backpacks" description="Backpacks are delivered directly to your character. Make sure you have enough inventory room before buying.">
+        <offer id="5001" name="Feedbag" icon="" price="350" eid="21292" itemid="21292" count="1" description="A reinforced backpack crafted for warriors. It has 20 container slots and reduces the weight of items stored inside by 30 percent."/>
+    </category>
+
+    <category name="Cosmetics" icon="store_cosmetics" description="Cosmetic unlocks for your character."/>
+
+    <category name="Outfits" parent="Cosmetics" icon="store_outfits" description="Outfits are unlocked directly on your character and include all addons. Both male and female look types are granted when available.">
+        <offer id="6001" name="Elementalist Outfit" icon="" price="450" eid="432" itemid="0" type="outfit" value="432" femalevalue="433" addon="3" count="1" description="Unlocks the Elementalist outfit with all addons."/>
+        <offer id="6002" name="Deepling Outfit" icon="" price="450" eid="463" itemid="0" type="outfit" value="463" femalevalue="464" addon="3" count="1" description="Unlocks the Deepling outfit with all addons."/>
+        <offer id="6003" name="Insectoid Outfit" icon="" price="450" eid="465" itemid="0" type="outfit" value="465" femalevalue="466" addon="3" count="1" description="Unlocks the Insectoid outfit with all addons."/>
+        <offer id="6004" name="Entrepreneur Outfit" icon="" price="450" eid="472" itemid="0" type="outfit" value="472" femalevalue="471" addon="3" count="1" description="Unlocks the Entrepreneur outfit with all addons."/>
+    </category>
+
+    <category name="Mounts" parent="Cosmetics" icon="store_mounts" description="Mounts are unlocked directly on your character. Once purchased, you can use them from the outfit window.">
+        <offer id="7001" name="Widow Queen" icon="" price="450" eid="368" itemid="0" type="mount" value="1" count="1" description="Unlocks the Widow Queen mount."/>
+        <offer id="7002" name="Racing Bird" icon="" price="450" eid="369" itemid="0" type="mount" value="2" count="1" description="Unlocks the Racing Bird mount."/>
+        <offer id="7003" name="War Bear" icon="" price="450" eid="370" itemid="0" type="mount" value="3" count="1" description="Unlocks the War Bear mount."/>
+        <offer id="7004" name="Black Sheep" icon="" price="450" eid="371" itemid="0" type="mount" value="4" count="1" description="Unlocks the Black Sheep mount."/>
+    </category>
+
+    <category name="Extras" icon="store_extras" description="Extra services for your character."/>
+
+    <category name="Extra Services" parent="Extras" icon="store_services" description="Character services are applied directly to the purchasing character.">
+        <offer id="8001" name="Name Change" icon="Name_Change" price="250" eid="0" itemid="0" type="changename" count="1" description="Choose a new name for your current character."/>
+        <offer id="8002" name="Sex Change" icon="Sex_Change" price="120" eid="0" itemid="0" type="sexchange" count="1" description="Changes your current character from female to male, or from male to female."/>
+    </category>
+
+</store>

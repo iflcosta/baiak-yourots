@@ -1,0 +1,125 @@
+# =========================================================
+# Baiak-Yourots TFS 1.8 — top-level .gitignore
+# =========================================================
+# Subdirectory .gitignores (client/, server/, tools/rme-clientid/)
+# handle their own build outputs. This file covers only the
+# top-level / cross-cutting exclusions.
+# =========================================================
+
+# ---- OS / editor detritus ----
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# Editor/agent runtime state (not part of source)
+.opencode/
+.claude/
+.mcp_config*
+
+# =========================================================
+# opencode agent runtime
+# =========================================================
+opencode.json
+.env
+.env.local
+
+# =========================================================
+# Local dev data — regenerable, not source
+# =========================================================
+
+# MariaDB data directory (created by `mysqld --initialize`)
+mariadb_data/
+mariadb-data/
+mysql_data/
+
+# Ultralight SDK extracted folder (regenerable from .zip)
+ultralight-sdk/
+ultralight-sdk-*/
+
+# =========================================================
+# RME prebuilt binary + bundled DLLs
+# (we keep the SOURCE with our patches, but not the binary)
+# =========================================================
+tools/rme-clientid/build/
+tools/rme-clientid/Editor_x64.exe
+tools/rme-clientid/Editor_x64.pdb
+tools/rme-clientid/Editor.exe
+tools/rme-clientid/*.dll
+tools/rme-clientid/SDL2*.dll
+tools/rme-clientid/libflu*.dll
+tools/rme-clientid/zlib1.dll
+tools/rme-clientid/ogg.dll
+tools/rme-clientid/vorbis.dll
+tools/rme-clientid/vorbisfile.dll
+tools/rme-clientid/libgcc_s_seh-1.dll
+tools/rme-clientid/libstdc++-6.dll
+tools/rme-clientid/libwinpthread-1.dll
+
+# =========================================================
+# vcpkg local install (regenerable via vcpkg.json)
+# =========================================================
+vcpkg_installed/
+
+# =========================================================
+# Logs
+# =========================================================
+*.log
+logs/
+
+# =========================================================
+# Archives (large, regenerable from source)
+# =========================================================
+*.rar
+*.7z
+*.zip
+*.tar.gz
+*.tar
+*.gz
+
+# Embedded git subdirs (we flatten into the main repo)
+.git/
+
+# =========================================================
+# AstraClient runtime DLLs (ship with the binary,
+# regenerable from ultralight-sdk/)
+# =========================================================
+client/AppCore.dll
+client/Ultralight.dll
+client/UltralightCore.dll
+client/WebCore.dll
+client/SDL2.dll
+client/*.dll
+!client/AstraClient.dll
+
+# =========================================================
+# AstraClient default minimap save (user-generated,
+# regenerable on first launch)
+# =========================================================
+client/data/default.otmm
+client/data/default.otmm.bak
+
+# =========================================================
+# TFS 1.8 server tools — large reference / one-off files
+# =========================================================
+server/tools/*.gif
+server/tools/*.bak
+server/tools/tfs18_static_analysis_report.html
+
+# =========================================================
+# OTClient raw .minimap files (RME exports, regenerable
+# from world.otbm + RME). PNG outputs ARE committed.
+# =========================================================
+client/data/minimap/*.minimap
+client/data/minimap/*.bak
+
+
