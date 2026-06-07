@@ -127,14 +127,85 @@ Currently in **Phase 1A: Servidor Rodando Localmente**.
 
 ### Pending
 - [x] Validar acesso com AstraClient (teste manual de login) — conta `iflopes2`, char Iago Lopes lv 2000
-- [ ] Fazer primeiro commit no git
+- [x] Fazer primeiro commit no git (`de4742b` em `master`, 10186 arquivos, 207.6 MB no `.git`)
+- [x] Repositório público criado em https://github.com/iflcosta/baiak-yourots
+- [x] Branch `develop` criada e configurada como default no GitHub
+- [x] `.gitignore` + `.gitattributes` cobrindo ~10 GB de build outputs e deps
+- [x] Scripts de bootstrap em `scripts/` (setup / build-server / build-client / run-server / stop-server / minimap-export)
 - [x] Minimap funcional com RME (cores exatas, void transparente) — ver `docs/minimap-procedure.md`
 
 ### Next Phases
-- Phase 1B: Versionamento & CI (gitflow, .gitignore, build scripts)
 - Phase 2: Map, Cities & Teleports
 - Phase 3: Systems & Spells (VIP, PvP events, custom actions)
 - Phase 4: Balance, QA & Deployment
+
+---
+
+## Git Workflow (gitflow light)
+
+Two long-lived branches on `origin`:
+- `master` — production / stable, updated only from `develop` via PR
+- `develop` — default branch on GitHub, integration branch for the next release
+
+Short-lived branches (off `develop`):
+- `feature/<scope>-<short-desc>` — e.g. `feature/vip-system`, `feature/daily-reward`
+- `fix/<short-desc>` — bug fixes against `develop`
+- `release/<version>` — release stabilization (bump versions, changelog)
+- `hotfix/<short-desc>` — urgent fixes branched off `master`, merged back to `master` and `develop`
+
+### Typical feature cycle
+```bash
+git checkout develop
+git pull
+git checkout -b feature/vip-system
+# ... code, commit often ...
+git push -u origin feature/vip-system
+# open PR -> develop on GitHub
+# after review + merge: branch deleted automatically (configure in repo settings)
+```
+
+### Releases
+```bash
+git checkout develop
+git checkout -b release/0.2.0
+# bump version.lua / config.lua serverName / etc
+git commit -m "chore(release): 0.2.0"
+# open PR release/0.2.0 -> master
+# after merge, tag master:
+git checkout master && git pull
+git tag -a v0.2.0 -m "Release 0.2.0"
+git push origin v0.2.0
+# back-merge release into develop:
+git checkout develop && git merge --no-ff release/0.2.0
+git push
+```
+
+### Commit message convention
+Conventional Commits in English (so `git log --oneline` reads cleanly):
+- `feat:` new feature
+- `fix:` bug fix
+- `chore:` tooling, deps, refactors without gameplay change
+- `docs:` documentation only
+- `refactor:` code change without functional change
+- `test:` add or fix tests
+- `perf:` performance improvement
+
+Always include a scope when it makes sense: `feat(vip):`, `fix(login):`, `chore(deps):`.
+
+---
+
+## Build & Run Scripts (`scripts/`, PowerShell 5.1)
+
+| Script | What it does |
+|---|---|
+| `setup.ps1` | Idempotent bootstrap: vcpkg deps, ultralight-sdk, 860.dat/.spr, MariaDB + schema import, .env |
+| `build-server.ps1 [-Config Debug|Release] [-Clean]` | CMake configure + build of TFS 1.8, copies binary to `server/` |
+| `build-client.ps1 [-Config Debug|Release] [-Clean]` | CMake configure + build of AstraClient, copies binary to `client/` |
+| `run-server.ps1` | Stops any running TFS, starts `theforgottenserver-x64.exe` in foreground |
+| `stop-server.ps1` | Stops any running TFS process |
+| `minimap-export.ps1` | Guides through RME export + runs `rme_bmp_to_png.py` to regenerate 192 PNGs |
+
+Run from repo root. Set `$env:VCPKG_ROOT` to override the default `C:\vcpkg`.
 
 ---
 
@@ -150,18 +221,14 @@ Currently in **Phase 1A: Servidor Rodando Localmente**.
 
 ---
 
-## Build Instructions (Server)
-1. Open `server/vc18/` in Visual Studio 2022.
-2. Set configuration to `Release x64`.
-3. Dependencies managed via `vcpkg` (see `server/vcpkg.json`).
-4. Build target: `theforgottenserver.exe`.
-
 ## Progress Log
 
 - **2026-06-06**: Projeto iniciado. Estrutura clonada (TFS 1.8 + AstraClient). Perfis de agente criados em `docs/agents/`. Iniciando Fase 1A (setup local).
 - **2026-06-06**: MariaDB 12.3, VS 2022 Build Tools e vcpkg instalados. Dependências compiladas. TFS 1.8 compilado com sucesso. Servidor rodando em 7171/7172. DB `baiak_tfs18` com schema importado. Aguardando teste de login com AstraClient.
 - **2026-06-07**: Login AstraClient validado (account `iflopes2`/pw `f2w4r8vu`, char Iago Lopes lv 2000). Bug save do player resolvido (criada tabela `player_rewarditems` faltando no schema). Iago Lopes reposicionado em (1000,1000,7).
 - **2026-06-07**: Minimap pipeline completo: RME CLIENTID compilado + prebuilt instalado em `tools/rme-clientid/`. RME exporta 16 BMPs com paleta 6x6x6 (mesma do OTClient). Conversor `server/tools/rme_bmp_to_png.py` gera 192 PNGs `X_Y_Z.png` com void transparente. Procedimento documentado em `docs/minimap-procedure.md`.
+- **2026-06-07**: Primeiro commit `de4742b` em `master` (10186 arquivos, 207.6 MB no `.git`). Removidos `.git/` aninhados de `client/`, `server/`, `tools/rme-clientid/` que estavam atrapalhando o `git add`. `.gitignore` cobre 10.5 GB de build outputs, DLLs, vcpkg, MariaDB data, ultralight-sdk, OTClient `.minimap` raws. `.gitattributes` com LF padrão, CRLF só em `.ps1/.bat/.cmd`.
+- **2026-06-07**: Repositório público criado em https://github.com/iflcosta/baiak-yourots (Phase 1B). `develop` branch é o default no GitHub. Scripts `scripts/{setup,build-server,build-client,run-server,stop-server,minimap-export}.ps1` cobrem o ciclo build→run→stop→minimap. Fluxo gitflow (master/develop + feature/fix/release/hotfix) documentado nesta seção.
 
 ## References
 - TFS 1.x Lua API: https://github.com/otland/forgottenserver/wiki
