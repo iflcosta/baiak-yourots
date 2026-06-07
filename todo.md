@@ -23,6 +23,11 @@
        copilot-instructions}
 
 ## Phase 2 — Map, Cities & Teleports (⏳ current)
+- [x] Catalog aethrium systems for import decision
+  ([docs/phase-2-analysis.md](docs/phase-2-analysis.md))
+- [ ] Resolve §7 of [docs/phase-2-analysis.md](docs/phase-2-analysis.md)
+  (5 pending decisions: map source, outfits scope, BP UI count,
+  freePremium, AETHERITE_MASTERY.md)
 - [ ] Decide final custom map (RME file path, source/author)
 - [ ] Import custom map into `server/data/world/world.otbm`
 - [ ] Re-run minimap pipeline for the new map
