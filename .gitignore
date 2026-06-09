@@ -115,6 +115,9 @@ server/tools/*.gif
 server/tools/*.bak
 server/tools/tfs18_static_analysis_report.html
 
+# RME minimap BMP exports (regenerable from world.otbm)
+server/data/world/minimap_*.bmp
+
 # =========================================================
 # OTClient raw .minimap files (RME exports, regenerable
 # from world.otbm + RME). PNG outputs ARE committed.
