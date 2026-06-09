@@ -39,11 +39,11 @@ client, that captures the Baiak-Yourots "feel":
   restarts (`minimap.otmm`).
 
 ### 4.2 Phase 2 — Map, Cities & Teleports (⏳ current)
-- Replace the placeholder map with the Baiak-Yourots custom map
-  (temples, hunt zones, starter city, event arenas).
-- City teleport system (NPC + tile-based) covering the custom map.
-- Town definitions in `server/data/world/world-spawn.xml` aligned with
-  the custom temple positions.
+- Import aethrium `real01` map (`world.otbm`, 2262×2131, 8 towns,
+  301 houses) — ✅ done (`0717aad`).
+- Minimap regenerated (1152 PNGs from 16 RME BMP exports) — ✅ done.
+- City teleport system (NPC + tile-based) covering the map.
+- Town definitions already aligned (aethrium spawn/house XMLs).
 
 ### 4.3 Phase 3 — Systems & Spells
 - VIP system (account flag, perks, expiry).

@@ -25,14 +25,13 @@
 ## Phase 2 — Map, Cities & Teleports (⏳ current)
 - [x] Catalog aethrium systems for import decision
   ([docs/phase-2-analysis.md](docs/phase-2-analysis.md))
-- [ ] Resolve §7 of [docs/phase-2-analysis.md](docs/phase-2-analysis.md)
-  (5 pending decisions: map source, outfits scope, BP UI count,
-  freePremium, AETHERITE_MASTERY.md)
-- [ ] Decide final custom map (RME file path, source/author)
-- [ ] Import custom map into `server/data/world/world.otbm`
-- [ ] Re-run minimap pipeline for the new map
-  ([docs/minimap-procedure.md](docs/minimap-procedure.md))
-- [ ] Add towns to `server/data/world/world-spawn.xml`
+- [x] **Decision**: Import aethrium map only (no systems)
+- [x] Import aethrium `real01.otbm` → `world.otbm` (2262x2131, v2)
+- [x] Add `real02-spawn.xml` / `real02-house.xml` (aethrium data)
+- [x] Remove old `world-spawn.xml` / `world-house.xml`
+- [x] Regenerate minimap (1152 PNGs from RME exports)
+  (`0717aad`)
+- [ ] Verify map + minimap ingame with AstraClient
 - [ ] City teleport NPC (Lua action/talkaction)
 - [ ] Verify teleport interaction ingame
 
