@@ -120,7 +120,7 @@ CREATE TABLE `migrations` (
 5. Update [todo.md](../todo.md) to mark the migration as done.
 
 The engine runs migrations on boot (or has a dedicated
-`./theforgottenserver --migrate` flag, check the C++ side).
+`./tfs --migrate` flag, check the C++ side).
 
 ### Known applied migrations
 

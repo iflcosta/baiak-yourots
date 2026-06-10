@@ -63,7 +63,7 @@ Use `-Skip` to skip steps: `.\scripts\setup.ps1 -Skip db,env`.
 ```
 
 Builds Release x64 with Ninja + MSVC. The binary is copied to
-`server/theforgottenserver-x64.exe` for convenience.
+`server/tfs.exe` for convenience.
 
 For a clean rebuild: `.\scripts\build-server.ps1 -Clean`.
 For Debug: `.\scripts\build-server.ps1 -Config Debug`.

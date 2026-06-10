@@ -154,7 +154,7 @@ server's protocol 8.6 implementation is upstream-clean
 vsvarsall.bat x64
   → cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=vcpkg.cmake
   → cmake --build . --config Release --parallel
-  → binary at server/build-Release/theforgottenserver-x64.exe
+  → binary at server/build-Release/tfs.exe (copied to `server/tfs.exe`)
   → scripts/build-server.ps1 copies it to server/ for convenience
 ```
 
