@@ -52,7 +52,7 @@
   `C:\vcpkg`, MariaDB 12.3, 7-Zip, Python 3.12.
 - Build/run scripts: `scripts/build-server.ps1`,
   `scripts/build-client.ps1`, `scripts/run-server.ps1`.
-- Server binary lives at `server/theforgottenserver-x64.exe`.
+- Server binary lives at `server/tfs.exe`.
 - Client binary lives at `client/AstraClient.exe`.
 - Schema: `server/schema.sql`, database `baiak_tfs18` on MariaDB
   port 3306.

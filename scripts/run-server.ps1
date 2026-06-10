@@ -3,9 +3,9 @@
     Start the TFS 1.8 server in the foreground.
 
 .DESCRIPTION
-    Launches server/theforgottenserver-x64.exe from the repo root.
-    Stops the running instance first if one is already attached to
-    ports 7171/7172 (login + game protocol). Ctrl-C to abort.
+    Launches server/tfs.exe from the repo root. Stops the running
+    instance first if one is already attached to ports 7171/7172
+    (login + game protocol). Ctrl-C to abort.
 
 .EXAMPLE
     .\scripts\run-server.ps1
@@ -16,14 +16,14 @@ param()
 $ErrorActionPreference = 'Stop'
 
 $RepoRoot = (Resolve-Path "$PSScriptRoot\..").Path
-$Exe      = Join-Path $RepoRoot 'server\theforgottenserver-x64.exe'
+$Exe      = Join-Path $RepoRoot 'server\tfs.exe'
 
 if (-not (Test-Path $Exe)) {
     throw "Server binary not found: $Exe`nBuild it first with .\scripts\build-server.ps1"
 }
 
 # Stop any running instance to free the ports.
-$running = Get-Process -Name 'theforgottenserver-x64' -ErrorAction SilentlyContinue
+$running = Get-Process -Name 'tfs' -ErrorAction SilentlyContinue
 if ($running) {
     Write-Host "==> Stopping existing server (PID $($running.Id))" -ForegroundColor Yellow
     $running | Stop-Process -Force

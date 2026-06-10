@@ -8,7 +8,7 @@
 [CmdletBinding()]
 param()
 
-$procs = Get-Process -Name 'theforgottenserver-x64' -ErrorAction SilentlyContinue
+$procs = Get-Process -Name 'tfs' -ErrorAction SilentlyContinue
 if (-not $procs) {
     Write-Host "No TFS server process running." -ForegroundColor DarkGray
     return
@@ -16,7 +16,7 @@ if (-not $procs) {
 Write-Host "==> Stopping $($procs.Count) process(es): $($procs.Id -join ', ')" -ForegroundColor Yellow
 $procs | Stop-Process -Force
 Start-Sleep -Seconds 1
-$remaining = Get-Process -Name 'theforgottenserver-x64' -ErrorAction SilentlyContinue
+$remaining = Get-Process -Name 'tfs' -ErrorAction SilentlyContinue
 if ($remaining) {
     throw "Failed to stop PID $($remaining.Id -join ', ')"
 }
