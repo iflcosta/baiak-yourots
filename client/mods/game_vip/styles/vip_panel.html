@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VIP Panel</title>
+    <link rel="stylesheet" href="styles/vip.css">
+</head>
+<body>
+    <div class="vip-container" id="vip-container">
+        <!-- Header: tier badge + name + days -->
+        <div class="vip-header">
+            <div class="vip-badge-wrap">
+                <img id="tier-badge" src="assets/vip-icon-empty.png" alt="VIP" class="vip-badge">
+            </div>
+            <div class="vip-header-text">
+                <div id="tier-name" class="vip-tier-name">Loading...</div>
+                <div id="vip-days" class="vip-days">&nbsp;</div>
+            </div>
+        </div>
+
+        <!-- Perks grid -->
+        <div class="vip-perks">
+            <div class="perk">
+                <span class="perk-label">XP Bonus</span>
+                <span id="xp-bonus" class="perk-value">+0%</span>
+            </div>
+            <div class="perk">
+                <span class="perk-label">Loot Bonus</span>
+                <span id="loot-bonus" class="perk-value">+0%</span>
+            </div>
+            <div class="perk">
+                <span class="perk-label">Outfits</span>
+                <span id="outfit-count" class="perk-value">0</span>
+            </div>
+            <div class="perk">
+                <span class="perk-label">Mounts</span>
+                <span id="mount-count" class="perk-value">0</span>
+            </div>
+        </div>
+
+        <!-- Subscription stack -->
+        <div class="vip-stack">
+            <h3 class="section-title">Subscription Stack</h3>
+            <div id="stack-list" class="stack-list">
+                <div class="stack-empty">No subscriptions</div>
+            </div>
+        </div>
+
+        <!-- Footer action -->
+        <div class="vip-actions">
+            <button id="buy-btn" class="vip-button vip-button-primary" type="button">
+                Buy / Extend VIP
+            </button>
+        </div>
+
+        <div id="error-banner" class="vip-error" style="display:none;"></div>
+    </div>
+
+    <script src="styles/vip.js"></script>
+</body>
+</html>

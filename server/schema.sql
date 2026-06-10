@@ -528,6 +528,23 @@ CREATE TABLE IF NOT EXISTS `towns` (
 
 INSERT INTO server_config (config, value) VALUES ('db_version', '46'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
 
+-- VIP system (migrations 48 + 49 — final shape, with both migrations applied)
+CREATE TABLE IF NOT EXISTS `player_vip_subscriptions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `player_id` INT UNSIGNED NOT NULL,
+  `tier` TINYINT UNSIGNED NOT NULL,
+  `expires_at` BIGINT NOT NULL,
+  `created_at` BIGINT NOT NULL,
+  `source` VARCHAR(32) NOT NULL DEFAULT 'scroll',
+  `is_active` TINYINT(1) NOT NULL DEFAULT 0,
+  `activation_order` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_player_expires` (`player_id`, `expires_at`),
+  KEY `idx_player_active` (`player_id`, `is_active`),
+  CONSTRAINT `fk_player_vip_subs_player` FOREIGN KEY (`player_id`)
+    REFERENCES `players` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS guild_transactions (
   id SERIAL PRIMARY KEY,
   guild_id int NOT NULL,

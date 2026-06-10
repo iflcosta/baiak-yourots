@@ -1,0 +1,292 @@
+/* =========================================================================
+   VIP Panel — purple/gray theme
+   Palette (per docs/specs/vip-system.md):
+     bg          #1a1a1f
+     accent      #7c3aed   (primary purple)
+     secondary   #a1a1aa   (gray)
+     tier colors:
+       bronze    #cd7f32
+       silver    #c0c0c0
+       gold      #ffd700
+   ========================================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 480px;
+    height: 540px;
+    background: transparent;
+    color: #e5e5e5;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.vip-container {
+    width: 480px;
+    height: 540px;
+    background: linear-gradient(180deg, #1a1a1f 0%, #16161b 100%);
+    border: 1px solid #2a2a30;
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 1px #7c3aed22, 0 4px 20px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+.vip-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #2a2a30;
+}
+
+.vip-badge-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #0d0d10;
+    border: 2px solid #2a2a30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.vip-badge {
+    width: 56px;
+    height: 56px;
+    image-rendering: -webkit-optimize-contrast;
+    object-fit: contain;
+}
+
+.vip-header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.vip-tier-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+
+.tier-free     { color: #a1a1aa; }
+.tier-bronze   { color: #cd7f32; text-shadow: 0 0 8px rgba(205, 127, 50, 0.35); }
+.tier-silver   { color: #e5e7eb; text-shadow: 0 0 8px rgba(192, 192, 192, 0.35); }
+.tier-gold     { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+
+.vip-days {
+    font-size: 12px;
+    color: #a1a1aa;
+    margin-top: 4px;
+}
+
+/* ---------- Perks ---------- */
+.vip-perks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 14px 0;
+    border-bottom: 1px solid #2a2a30;
+}
+
+.perk {
+    background: #0d0d10;
+    border: 1px solid #2a2a30;
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.perk-label {
+    color: #a1a1aa;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.perk-value {
+    color: #7c3aed;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* ---------- Stack ---------- */
+.vip-stack {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    overflow: hidden;
+}
+
+.section-title {
+    font-size: 11px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stack-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 4px;
+}
+
+/* Custom scrollbar (Webkit) */
+.stack-list::-webkit-scrollbar { width: 6px; }
+.stack-list::-webkit-scrollbar-track { background: transparent; }
+.stack-list::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 3px; }
+.stack-list::-webkit-scrollbar-thumb:hover { background: #3a3a42; }
+
+.stack-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    background: #0d0d10;
+    border: 1px solid #2a2a30;
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+.stack-item.stack-active {
+    border-color: #7c3aed;
+    background: linear-gradient(90deg, #1a1024 0%, #0d0d10 100%);
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.25);
+}
+
+.stack-tier {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: #1a1a1f;
+}
+
+.stack-tier.tier-bronze { color: #cd7f32; border: 1px solid #cd7f3255; }
+.stack-tier.tier-silver { color: #e5e7eb; border: 1px solid #c0c0c055; }
+.stack-tier.tier-gold   { color: #ffd700; border: 1px solid #ffd70055; }
+
+.stack-days {
+    color: #e5e5e5;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stack-days .source-tag {
+    color: #7c3aed;
+    font-size: 10px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stack-badge {
+    background: #7c3aed;
+    color: #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.stack-activate {
+    background: #1a1a1f;
+    color: #7c3aed;
+    border: 1px solid #7c3aed;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.stack-activate:hover {
+    background: #7c3aed;
+    color: #fff;
+}
+
+.stack-activate:active {
+    background: #6d28d9;
+}
+
+.stack-empty {
+    color: #6a6a72;
+    text-align: center;
+    padding: 18px 0;
+    font-style: italic;
+    font-size: 12px;
+}
+
+/* ---------- Actions ---------- */
+.vip-actions {
+    padding-top: 12px;
+    border-top: 1px solid #2a2a30;
+    margin-top: 4px;
+}
+
+.vip-button {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.12s ease, transform 0.06s ease;
+}
+
+.vip-button-primary {
+    background: linear-gradient(180deg, #8b5cf6 0%, #7c3aed 100%);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.4);
+}
+
+.vip-button-primary:hover { filter: brightness(1.1); }
+.vip-button-primary:active { transform: translateY(1px); }
+
+/* ---------- Error banner ---------- */
+.vip-error {
+    background: #4a1d1d;
+    color: #fca5a5;
+    border: 1px solid #7c2d2d;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 12px;
+}

@@ -7778,3 +7778,69 @@ void Player::clearCooldowns()
 		}
 	}
 }
+
+// ---------------------------------------------------------------------------
+// VIP system (in-memory cache, populated from DB on login and refreshed
+// by Lua helpers after any subscription change).
+// All mutations go through Lua scripts in data/lib/core/vip_system.lua —
+// there is intentionally no setVipTier() / setVipExpires() C++ method.
+// ---------------------------------------------------------------------------
+
+bool Player::isVip() const
+{
+	return vipTier > 0 && vipExpires > static_cast<int64_t>(time(nullptr));
+}
+
+int32_t Player::getVipDaysRemaining() const
+{
+	if (!isVip()) {
+		return 0;
+	}
+	int64_t remaining = vipExpires - static_cast<int64_t>(time(nullptr));
+	if (remaining <= 0) {
+		return 0;
+	}
+	return static_cast<int32_t>(std::ceil(remaining / 86400.0));
+}
+
+int32_t Player::getVipXpBonus() const
+{
+	if (!isVip()) {
+		return 0;
+	}
+	switch (vipTier) {
+		case 1: return 10;
+		case 2: return 20;
+		case 3: return 30;
+		default: return 0;
+	}
+}
+
+int32_t Player::getVipLootBonus() const
+{
+	if (!isVip()) {
+		return 0;
+	}
+	switch (vipTier) {
+		case 1: return 10;
+		case 2: return 15;
+		case 3: return 25;
+		default: return 0;
+	}
+}
+
+void Player::reloadVipCache()
+{
+	Database& db = Database::getInstance();
+	DBResult_ptr result = db.storeQuery(fmt::format(
+		"SELECT `tier`, `expires_at` FROM `player_vip_subscriptions` "
+		"WHERE `player_id` = {:d} AND `is_active` = 1 AND `expires_at` > UNIX_TIMESTAMP() "
+		"LIMIT 1",
+		getGUID()));
+	if (result) {
+		setVipCache(result->getNumber<uint8_t>("tier"),
+		            result->getNumber<int64_t>("expires_at"));
+	} else {
+		setVipCache(0, 0);
+	}
+}

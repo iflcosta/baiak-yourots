@@ -15,6 +15,7 @@
 | [conventions.md](conventions.md)           | Lua / C++ / Git / PR conventions          |
 | [minimap-procedure.md](minimap-procedure.md) | RME -> PNG -> factory reset             |
 | [spec-driven-development.md](spec-driven-development.md) | The methodology             |
+| [specs/vip-system.md](specs/vip-system.md) | VIP system feature spec (Phase 3)         |
 
 ## For AI agents
 

@@ -377,6 +377,25 @@ public:
 
 	void clearCooldowns();
 
+	// VIP system (in-memory cache, populated from DB on login and refreshed
+	// by Lua helpers after any subscription change). All mutations go through
+	// Lua scripts (data/lib/core/vip_system.lua) — there is no setVipTier()
+	// C++ method. Cache is transient: not persisted in the players table.
+	bool isVip() const;
+	uint8_t getVipTier() const { return vipTier; }
+	int64_t getVipExpires() const { return vipExpires; }
+	int32_t getVipDaysRemaining() const;
+	int32_t getVipXpBonus() const;
+	int32_t getVipLootBonus() const;
+	void reloadVipCache();
+	// Direct cache setter used by the `vipSetCache` global Lua function. The
+	// tier is clamped to [0,3] by the caller; tier 0 means "no active VIP"
+	// and the expires value is also zeroed in that case.
+	void setVipCache(uint8_t tier, int64_t expires) {
+		vipTier = tier;
+		vipExpires = expires;
+	}
+
 	bool isOffline() const { return (getID() == 0); }
 	void disconnect()
 	{
@@ -1615,6 +1634,10 @@ private:
 	int64_t fearImmunityEnd = 0;
 	VirtueMonk_t m_virtue = VIRTUE_NONE;
 	bool loading = false;
+
+	// VIP cache (transient, populated by reloadVipCache())
+	uint8_t vipTier = 0;
+	int64_t vipExpires = 0;
 
 	AccountManagerMode accountManager{ACCOUNT_MANAGER_NONE};
 	std::array<bool, 15> managerTalkState{};

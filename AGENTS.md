@@ -107,7 +107,7 @@ myAction:register()
 ---
 
 ## Project Status
-Currently in **Phase 1A: Servidor Rodando Localmente**.
+Currently in **Phase 2: Map ✅ done — advancing to Phase 3: Systems & Spells**.
 
 ### ✓ Completed (Phase 1)
 - [x] TFS 1.8 server repository cloned → `server/`
@@ -120,7 +120,7 @@ Currently in **Phase 1A: Servidor Rodando Localmente**.
 - [x] Database `baiak_tfs18` criado com schema.sql importado
 - [x] VS 2022 Build Tools + vcpkg instalados
 - [x] Dependências vcpkg instaladas (abseil, asio, fmt, lua, libmariadb, openssl, pugixml, spdlog, etc.)
-- [x] TFS 1.8 compilado → `theforgottenserver-x64.exe`
+- [x] TFS 1.8 compilado → `tfs.exe`
 - [x] Servidor rodando localmente (portas 7171/7172)
 - [x] `server_config.lua` validado para AstraClient (astraClientOnly=false, demais defaults)
 - [x] Conta Account Manager padrão (id=1, password=1) disponível
@@ -138,6 +138,84 @@ Currently in **Phase 1A: Servidor Rodando Localmente**.
 - Phase 2: Map, Cities & Teleports
 - Phase 3: Systems & Spells (VIP, PvP events, custom actions)
 - Phase 4: Balance, QA & Deployment
+
+---
+## CRITICAL: Mandatory OTClient/AstraClient API Rules (client mods)
+
+These are the gotchas I hit while building `game_vip` (the VIP panel
+mod). They are NOT obvious from reading existing mods and will cost
+you a verifier rejection if you get them wrong.
+
+### 1. Use `g_ui.loadUIFromString` for OTML-from-string, NOT `createWidgetFromOTMLString`
+
+- `g_ui.createWidgetFromOTMLString` does **not exist**. The bound APIs are:
+  - `g_ui.loadUI(file_path, parent)` — load a static `.otui` file
+  - `g_ui.loadUIFromString(otml_string, parent)` — load an OTML literal
+  - `g_ui.createWidgetFromOTML(otmlNode, parent)` — takes a pre-parsed
+    `OTMLNodePtr`, NOT a string
+- For an inline OTML wrapper, use `loadUIFromString`. See
+  `client/src/framework/luafunctions.cpp:430-434`.
+
+### 2. Global keybinds use `g_keyboard.bindKeyPress`, NOT `g_keyboard.onPress`
+
+- `g_keyboard` is a plain Lua table — it has no signal mechanism. Doing
+  `connect(g_keyboard, { onPress = fn })` is **dead code**: nothing ever
+  fires `g_keyboard.onPress`.
+- The canonical pattern is `g_keyboard.bindKeyPress('Ctrl+V', callback)`,
+  which installs the combo on the widget's `boundKeyPressCombos` table
+  — that table IS what the input system dispatches. See
+  `client/modules/corelib/keyboard.lua:190` (and `unbindKeyPress` at
+  line 254). Existing reference: `mods/game_helper/helper.lua:1270`
+  binds `Tab` this way.
+
+### 3. Sandboxed mods that expose JS-callable callbacks MUST write to `_G`
+
+- The Ultralight C++ dispatcher does
+  `g_lua.evaluateExpression("game_vip.onActivateSubscription('123')")`,
+  and `evaluateExpression` runs the chunk in the real global env (`_G`).
+- Sandboxed envs have `__index = _G` (reads fall through), but writes
+  stay local. So if a sandboxed mod does `local game_vip = { onX = ... }`,
+  the C++ dispatcher's lookup of `game_vip` will find **nil** in `_G`.
+- The pattern that works: `_G.game_vip = _G.game_vip or {}` followed by
+  `_G.game_vip.onX = function(...) ... end`. Same trick is used in
+  `mods/game_helper/timer_panel.lua:878` for
+  `_G.modules.game_helper.timerPanel`.
+
+### 4. `ProtocolGame.unregisterExtendedOpcode` throws on empty slot
+
+- Source: `client/modules/gamelib/protocolgame.lua:80-82` —
+  `error('Opcode is not registered.')` if the slot is empty.
+- This matters in `onGameStart`: if the mod was previously registered
+  and terminate unregisterd it (or the slot was never filled), the next
+  `onGameStart` will throw here and abort the rest of the handler
+  (no re-register, no `request_update`).
+- Fix: always `pcall(ProtocolGame.unregisterExtendedOpcode, opcode)`
+  before `registerExtendedOpcode` in `onGameStart`. This makes
+  `/reloadgame_vip` while in-game work correctly.
+
+### 5. Ultralight HTML base dir
+
+- `UltraLightManager::detectUltralightBaseDir()` (line 571) probes
+  `<temp>/ultralight`, `.`, `../ultralight-sdk`, `../../ultralight-sdk`
+  — returning the first one with `resources/cacert.pem`. The local
+  install has it at `C:\baiak-yourots\ultralight-sdk` (candidate #3).
+- `loadFile()` (line 453) builds `file:///<baseDir><htmlPath>`, so the
+  actual served URL is `file:///C:/baiak-yourots/ultralight-sdk/vip/vip_panel.html`.
+- Mods shipping HTML/CSS/JS/PNG assets must mirror them under
+  `<ultralight-sdk>/vip/` at runtime. The standard pattern is to use
+  `io.open` + `os.execute('mkdir ...')` in `init()`/`onGameStart()` to
+  copy from the mod's `styles/` + `assets/` dirs (sandboxed mods CAN
+  use `io` and `os` — only the global env is restricted, not stdlib).
+
+### 6. The OTUI wrapper around the Ultralight view
+
+- The HTML view is just a textured bitmap. To make it anchor + move
+  with the rest of the UI, wrap it in a `Panel` (OTUI) via
+  `g_ui.loadUIFromString(...)`, then `g_ultralight.setViewPosition(name, 0, 0)`
+  on the panel's top-left.
+- Make the wrapper `background: #00000000` (transparent) so only the
+  HTML content is visible. The Ultralight view itself is also
+  `is_transparent: true` (see `UltraLightManager::createView` line 369).
 
 ---
 
@@ -201,7 +279,7 @@ Always include a scope when it makes sense: `feat(vip):`, `fix(login):`, `chore(
 | `setup.ps1` | Idempotent bootstrap: vcpkg deps, ultralight-sdk, 860.dat/.spr, MariaDB + schema import, .env |
 | `build-server.ps1 [-Config Debug|Release] [-Clean]` | CMake configure + build of TFS 1.8, copies binary to `server/` |
 | `build-client.ps1 [-Config Debug|Release] [-Clean]` | CMake configure + build of AstraClient, copies binary to `client/` |
-| `run-server.ps1` | Stops any running TFS, starts `theforgottenserver-x64.exe` in foreground |
+| `run-server.ps1` | Stops any running TFS, starts `tfs.exe` in foreground |
 | `stop-server.ps1` | Stops any running TFS process |
 | `minimap-export.ps1` | Guides through RME export + runs `rme_bmp_to_png.py` to regenerate 192 PNGs |
 
@@ -230,6 +308,9 @@ Run from repo root. Set `$env:VCPKG_ROOT` to override the default `C:\vcpkg`.
 - **2026-06-07**: Primeiro commit `de4742b` em `master` (10186 arquivos, 207.6 MB no `.git`). Removidos `.git/` aninhados de `client/`, `server/`, `tools/rme-clientid/` que estavam atrapalhando o `git add`. `.gitignore` cobre 10.5 GB de build outputs, DLLs, vcpkg, MariaDB data, ultralight-sdk, OTClient `.minimap` raws. `.gitattributes` com LF padrão, CRLF só em `.ps1/.bat/.cmd`.
 - **2026-06-07**: Repositório público criado em https://github.com/iflcosta/baiak-yourots (Phase 1B). `develop` branch é o default no GitHub. Scripts `scripts/{setup,build-server,build-client,run-server,stop-server,minimap-export}.ps1` cobrem o ciclo build→run→stop→minimap. Fluxo gitflow (master/develop + feature/fix/release/hotfix) documentado nesta seção.
 - **2026-06-07**: Documentação completa (Phase 1B+). Adicionados `README.md`, `LICENSE` (GPL-2.0 herdado do TFS), `CREDITS.md`, `spec.md` (Phases 2-4), `todo.md`, `docs/README.md` (índice), `docs/{local-dev, build-troubleshoot, database, architecture, spec-driven-development, conventions}.md`. Perfis de agente (`docs/agents/*.md`) atualizados com estado atual, áreas ownadas, workflow detalhado. GitHub: `.github/{CODEOWNERS, PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE/{bug_report,feature_request}.md, copilot-instructions.md}`. Metodologia: Spec-Driven Development — specs primeiro, código depois (justificado pelo desenvolvimento IA-based).
+- **2026-06-09**: Phase 2 completo (`2768ada`). Mapa aethrium `real01.otbm` (2262x2131, 8 cidades, 301 casas) importado. Spawn/house XMLs do aethrium integrados. Minimap regenerado (1152 PNGs de 16 BMPs RME). Login AstraClient validado — mapa funcional, personagem Iago Lopes (lv 2000) logado com sucesso. City teleport removido do scope. Phase 3 (Systems & Spells) em aberto.
+- **2026-06-09**: VIP system spec draft criada em `docs/specs/vip-system.md` (status: `draft`, awaiting approval). 3 tiers cumulativos (Bronze→Silver→Gold), pagamento mensal, **subscription stacking LIFO com escolha do player** (LIFO é o default, mas o player pode ativar qualquer subscription da pilha via UI; auto-fallback ao expirar usa o tier mais alto restante). C++ patches + 2 DB migrations + server Lua + client Ultralight panel. Inspirado pelo aethrium-baiak (referência de arquitetura) mas custom-built com player choice + auto-fallback. `todo.md` Phase 3 detalhado com sub-tarefas do VIP.
+- **2026-06-09**: VIP system spec aprovada pelo user (`status: agreed`). Implementação iniciada via `mavis-team` (paralelo: `agent_developer` faz C++ + Lua, `agent_client` faz HTML/CSS/JS via Ultralight). 16 sub-tarefas no `todo.md` em status `[~]`.
 
 ## References
 - TFS 1.x Lua API: https://github.com/otland/forgottenserver/wiki

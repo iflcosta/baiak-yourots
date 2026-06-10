@@ -2886,6 +2886,121 @@ int luaPlayerGetExperienceRate(lua_State* L)
 	return 1;
 }
 
+// ---------------------------------------------------------------------------
+// VIP system bindings
+// All getters only — mutations go through Lua scripts (data/lib/core/vip_system.lua)
+// which write to the DB and then call the global `vipSetCache(player, tier, expires)`
+// to update this Player's in-memory cache.
+// ---------------------------------------------------------------------------
+
+int luaPlayerIsVip(lua_State* L)
+{
+	// player:isVip()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushboolean(L, player->isVip());
+	return 1;
+}
+
+int luaPlayerGetVipTier(lua_State* L)
+{
+	// player:getVipTier()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushinteger(L, player->getVipTier());
+	return 1;
+}
+
+int luaPlayerGetVipExpires(lua_State* L)
+{
+	// player:getVipExpires()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushinteger(L, static_cast<lua_Integer>(player->getVipExpires()));
+	return 1;
+}
+
+int luaPlayerGetVipDaysRemaining(lua_State* L)
+{
+	// player:getVipDaysRemaining()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushinteger(L, player->getVipDaysRemaining());
+	return 1;
+}
+
+int luaPlayerGetVipXpBonus(lua_State* L)
+{
+	// player:getVipXpBonus()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushinteger(L, player->getVipXpBonus());
+	return 1;
+}
+
+int luaPlayerGetVipLootBonus(lua_State* L)
+{
+	// player:getVipLootBonus()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushinteger(L, player->getVipLootBonus());
+	return 1;
+}
+
+int luaVipSetCache(lua_State* L)
+{
+	// vipSetCache(player, tier, expiresAt)
+	// Global helper used by VipSystem._setPlayerCache() to write the player's
+	// in-memory VIP cache directly. The Lua side is the source of truth for
+	// subscription state in DB; this just mirrors the active row into the
+	// C++ object so subsequent player:isVip()/getVipTier() calls are O(1).
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint8_t tier = static_cast<uint8_t>(Lua::getNumber<uint32_t>(L, 2));
+	int64_t expires = static_cast<int64_t>(Lua::getNumber<int64_t>(L, 3));
+
+	// Cap tier to the valid range; treat anything outside [0,3] as a clear.
+	if (tier > 3) {
+		tier = 0;
+		expires = 0;
+	}
+	if (tier == 0) {
+		expires = 0;
+	}
+
+	player->setVipCache(tier, expires);
+	Lua::pushBoolean(L, true);
+	return 1;
+}
+
 int luaPlayerSetExperienceRate(lua_State* L)
 {
 	// player:setExperienceRate(type, rate)
@@ -4271,6 +4386,17 @@ void LuaScriptInterface::registerPlayer()
 
 	registerMethod("Player", "getExperienceRate", luaPlayerGetExperienceRate);
 	registerMethod("Player", "setExperienceRate", luaPlayerSetExperienceRate);
+
+	// VIP system bindings (5 getters + no setter — mutations go through Lua scripts)
+	registerMethod("Player", "isVip", luaPlayerIsVip);
+	registerMethod("Player", "getVipTier", luaPlayerGetVipTier);
+	registerMethod("Player", "getVipExpires", luaPlayerGetVipExpires);
+	registerMethod("Player", "getVipDaysRemaining", luaPlayerGetVipDaysRemaining);
+	registerMethod("Player", "getVipXpBonus", luaPlayerGetVipXpBonus);
+	registerMethod("Player", "getVipLootBonus", luaPlayerGetVipLootBonus);
+
+	// Global helper called by VipSystem._setPlayerCache() after any subscription change.
+	registerGlobalMethod("vipSetCache", luaVipSetCache);
 
 	registerMethod("Player", "isUsingOtcV8", luaPlayerIsUsingOtcV8);
 	registerMethod("Player", "isUsingAstraClient", luaPlayerIsUsingAstraClient);

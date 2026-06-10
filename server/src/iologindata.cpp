@@ -829,6 +829,9 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		} while (result->next());
 	}
 
+	// load VIP subscription stack into the in-memory cache (transient — not persisted in players table)
+	player->reloadVipCache();
+
 	player->updateBaseSpeed();
 	player->updateInventoryWeight();
 	player->updateItemsLight(true);
