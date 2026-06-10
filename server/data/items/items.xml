@@ -76866,4 +76866,18 @@
 	<item id="51747" article="a" name="intricate void scroll">
 		<attribute key="weight" value="250" />
 	</item>
+
+	<!-- VIP system activation scrolls (server/src/player.h + data/lib/core/vip_system.lua) -->
+	<item id="24774" article="a" name="VIP Bronze Scroll">
+		<attribute key="weight" value="250" />
+		<attribute key="description" value="Use this scroll to activate 30 days of VIP Bronze." />
+	</item>
+	<item id="24775" article="a" name="VIP Silver Scroll">
+		<attribute key="weight" value="250" />
+		<attribute key="description" value="Use this scroll to activate 30 days of VIP Silver." />
+	</item>
+	<item id="24776" article="a" name="VIP Gold Scroll">
+		<attribute key="weight" value="250" />
+		<attribute key="description" value="Use this scroll to activate 30 days of VIP Gold." />
+	</item>
 </items>

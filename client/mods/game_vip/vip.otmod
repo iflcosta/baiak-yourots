@@ -1,0 +1,9 @@
+Module
+  name: game_vip
+  description: VIP subscription panel (Baiak-Yourots)
+  author: Baiak-Yourots
+  sandboxed: true
+  autoload-priority: 1002
+  scripts: [ vip ]
+  @onLoad: init()
+  @onUnload: terminate()

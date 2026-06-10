@@ -13,6 +13,9 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
+# ---- Mavis runtime state (engine plans, scratchpad, caches) ----
+.mavis/
+
 # IDE
 .idea/
 .vscode/

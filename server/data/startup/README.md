@@ -36,6 +36,11 @@ Teleport (unique) = 35001/40000 (this is magic forcefield items)
 Item (action) = 40001/42000
 Item (unique) = 40001/42000
 
+VIP (action) = 50010/50012 (gated tiles by VIP tier; see data/scripts/movements/vip_tiles.lua)
+	50010 = VIP Bronze or higher (min tier 1)
+	50011 = VIP Silver or higher (min tier 2)
+	50012 = VIP Gold              (min tier 3)
+
 This folder was created exclusively for tables and functions that are loaded at startup or that cannot be reloaded, thus maintaining greater organization in the files.
 
 Action IDS
