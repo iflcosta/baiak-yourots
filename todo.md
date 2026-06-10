@@ -22,24 +22,37 @@
 - [x] .github/{CODEOWNERS, PR template, issue templates,
        copilot-instructions}
 
-## Phase 2 — Map, Cities & Teleports (⏳ current)
+## Phase 2 — Map, Cities & Teleports (✅ done)
 - [x] Catalog aethrium systems for import decision
   ([docs/phase-2-analysis.md](docs/phase-2-analysis.md))
-- [ ] Resolve §7 of [docs/phase-2-analysis.md](docs/phase-2-analysis.md)
-  (5 pending decisions: map source, outfits scope, BP UI count,
-  freePremium, AETHERITE_MASTERY.md)
-- [ ] Decide final custom map (RME file path, source/author)
-- [ ] Import custom map into `server/data/world/world.otbm`
-- [ ] Re-run minimap pipeline for the new map
-  ([docs/minimap-procedure.md](docs/minimap-procedure.md))
-- [ ] Add towns to `server/data/world/world-spawn.xml`
-- [ ] City teleport NPC (Lua action/talkaction)
-- [ ] Verify teleport interaction ingame
+- [x] **Decision**: Import aethrium map only (no systems)
+- [x] Import aethrium `real01.otbm` → `world.otbm` (2262x2131, v2)
+- [x] Add `real02-spawn.xml` / `real02-house.xml` (aethrium data)
+- [x] Remove old `world-spawn.xml` / `world-house.xml`
+- [x] Regenerate minimap (1152 PNGs from RME exports)
+  (`0717aad`)
+- [x] Verify map + minimap ingame with AstraClient
+- [x] ~~City teleport NPC~~ (removed from scope — aethrium doesn't ship one)
 
 ## Phase 3 — Systems & Spells
-- [ ] VIP account flag (account DB column + storage key)
-- [ ] VIP perks (cosmetic, QoL, zone access)
-- [ ] Daily reward / login streak
+
+### VIP System (spec: docs/specs/vip-system.md — agreed 2026-06-09)
+- [x] **Implementation complete** (`73cea6f` merged to develop)
+  - C++ engine: `player.h`/`player.cpp`/`luaplayer.cpp`/`iologindata.cpp`
+    patches (5 public methods + 5 Lua bindings)
+  - 2 DB migrations: `48.lua` + `49.lua` (idempotent, run on server boot)
+  - 7 server Lua scripts: tier tables, login perks, gated tiles
+    (AIDs 50010-12), activation scrolls (items 24774-6), `!vip` UI
+    command, GM `!setvip`, extended opcode 181 protocol
+  - Client: `client/mods/game_vip/` (AstraClient + Ultralight panel)
+  - Integration gate: 20/20 checks passed
+  - Item sprite IDs (24774-6) are provisional; will reuse existing
+    ClientIDs once visual design lands (see follow-up in
+    docs/specs/vip-system.md §11)
+- [ ] Manual smoke tests (Section 10 of spec) — owner validation pending
+
+### Other Phase 3 features
+- [ ] Daily reward / login streak (spec TBD)
 - [ ] Custom PvP event (last-man-standing)
 - [ ] Custom spells / runes for the meta
 
